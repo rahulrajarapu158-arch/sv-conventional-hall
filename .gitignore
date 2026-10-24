@@ -1,0 +1,4 @@
+raw_assets/
+*.py
+assets_preview.html
+.vscode/
