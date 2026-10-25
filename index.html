@@ -15,9 +15,6 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Three.js for 360 WebGL Virtual Walkthrough -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
   <!-- Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -49,8 +46,7 @@
       </a>
 
       <div class="nav-links" id="navLinks">
-        <a href="#spaces" class="nav-link">Venue Spaces</a>
-        <a href="#virtual-tour" class="nav-link nav-highlight"><i data-lucide="orbit"></i> 360° Live Tour</a>
+        <a href="#spaces" class="nav-link nav-highlight"><i data-lucide="sparkles"></i> Venue Spaces</a>
         <a href="#calculator" class="nav-link">Estimator</a>
         <a href="#floorplan" class="nav-link">Floor Plan</a>
         <a href="#location" class="nav-link">Location</a>
@@ -85,8 +81,8 @@
       </p>
 
       <div class="hero-actions">
-        <a href="#virtual-tour" class="btn btn-rose btn-large">
-          <i data-lucide="orbit"></i> Launch 360° Live Tour
+        <a href="#spaces" class="btn btn-rose btn-large">
+          <i data-lucide="sparkles"></i> Explore Venue Spaces
         </a>
         <a href="#quick-booking" class="btn btn-glass btn-large">
           <i data-lucide="calendar-check"></i> Check Muhurtham Dates
@@ -132,112 +128,6 @@
       </div>
     </div>
   </header>
-
-  <!-- 360° LIVE PHOTO WALKTHROUGH (PHONE-SAFE & THREE.JS WEBGL) -->
-  <section class="section tour-section" id="virtual-tour">
-    <div class="container">
-      <div class="section-title-wrap text-center">
-        <span class="section-badge"><i data-lucide="orbit"></i> IMMERSIVE VIRTUAL TOUR</span>
-        <h2 class="section-title">360° Live Interactive Walkthrough</h2>
-        <div class="divider-rose"><span>✦</span></div>
-        <p class="section-desc">
-          Experience the regal scale of SV Conventional Hall directly from your smartphone. Navigate between the grand banquet auditorium, royal floral stage, and reception lawn.
-        </p>
-      </div>
-
-      <div class="tour-interactive-card">
-        <!-- 360 Viewport Container -->
-        <div class="panorama-viewport-wrapper" id="panoramaWrapper">
-          
-          <!-- Tap-to-Activate Cover (Protects Mobile Scroll) -->
-          <div class="panorama-cover" id="panoramaCover">
-            <div class="cover-content">
-              <div class="cover-icon-pulse"><i data-lucide="orbit"></i></div>
-              <h3>Explore SV Conventional Hall in 360°</h3>
-              <p>Touch, drag or tilt your phone to look all around the imperial hall</p>
-              <button class="btn btn-rose btn-large" id="startTourBtn">
-                <i data-lucide="play-circle"></i> Launch 360° Photo Walkthrough
-              </button>
-              <span class="phone-tip"><i data-lucide="smartphone"></i> Smooth 60 FPS mobile touch & phone motion gyroscope</span>
-            </div>
-          </div>
-
-          <!-- WebGL Three.js Canvas Container -->
-          <div id="threeCanvasContainer" class="three-canvas-container"></div>
-
-          <!-- Hotspots Overlay -->
-          <div class="tour-hotspots-overlay" id="hotspotsOverlay">
-            <div class="hotspot-pin pin-stage" data-title="Imperial Wedding Mandap Stage" data-desc="Expansive 45-foot elevated stage with royal backdrop framework and bridal party seating." data-img="assets/images/stage_decor.jpg">
-              <span class="hotspot-beacon"></span>
-              <span class="hotspot-label"><i data-lucide="sparkles"></i> Mandap Stage</span>
-            </div>
-            <div class="hotspot-pin pin-chandeliers" data-title="Crystal Chandeliers & Rose Gold Accents" data-desc="High-ceiling crystal chandeliers paired with ambient LED cove mood lighting." data-img="assets/images/main_hall.jpg">
-              <span class="hotspot-beacon"></span>
-              <span class="hotspot-label"><i data-lucide="sun"></i> Royal Ceiling</span>
-            </div>
-            <div class="hotspot-pin pin-lawn" data-title="Open-Air Reception Lawn" data-desc="Landscaped open lawn for evening receptions, buffet live-counters, and wedding ceremonies under the stars." data-img="assets/images/lawn_exterior.jpg">
-              <span class="hotspot-beacon"></span>
-              <span class="hotspot-label"><i data-lucide="trees"></i> Reception Lawn</span>
-            </div>
-          </div>
-
-          <!-- HUD Controls Bar -->
-          <div class="tour-hud-bar">
-            <!-- Scene Switchers -->
-            <div class="hud-scenes">
-              <button class="scene-btn active" data-scene="hall">
-                <i data-lucide="building"></i> <span>Grand Banquet Hall</span>
-              </button>
-              <button class="scene-btn" data-scene="stage">
-                <i data-lucide="sparkles"></i> <span>Royal Mandap Stage</span>
-              </button>
-              <button class="scene-btn" data-scene="lawn">
-                <i data-lucide="trees"></i> <span>Open-Air Lawn</span>
-              </button>
-            </div>
-
-            <!-- View Controls -->
-            <div class="hud-controls">
-              <button class="hud-control-btn" id="toggleAutoRotateBtn" title="Toggle Auto-Rotation">
-                <i data-lucide="rotate-cw"></i> <span class="desktop-only">Auto-Spin</span>
-              </button>
-              <button class="hud-control-btn" id="toggleGyroBtn" title="Enable Phone Gyroscope/Sensor Mode">
-                <i data-lucide="compass"></i> <span>Phone Motion</span>
-              </button>
-              <button class="hud-control-btn" id="toggleFullscreenBtn" title="Edge-to-Edge Fullscreen">
-                <i data-lucide="maximize"></i> <span class="desktop-only">Fullscreen</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Mobile Gesture Helper -->
-          <div class="mobile-gesture-helper">
-            <i data-lucide="move"></i> <span>Swipe with thumb to look 360° around the venue</span>
-          </div>
-        </div>
-
-        <!-- Hotspot Detail Drawer -->
-        <div class="hotspot-drawer" id="hotspotDrawer">
-          <div class="drawer-header">
-            <h4 id="drawerTitle">Imperial Wedding Mandap Stage</h4>
-            <button class="drawer-close" id="drawerClose" aria-label="Close details">&times;</button>
-          </div>
-          <div class="drawer-body">
-            <div class="drawer-thumb-wrap" id="drawerThumbWrap">
-              <img id="drawerThumbImg" src="assets/images/stage_decor.jpg" alt="SV Conventional Detail">
-            </div>
-            <div class="drawer-text-wrap">
-              <p id="drawerDesc">Expansive 45-foot elevated stage with royal backdrop framework and bridal party seating.</p>
-              <a href="#" id="drawerInquireBtn" target="_blank" class="btn btn-rose-header drawer-btn">
-                <i data-lucide="message-circle"></i> Inquire on WhatsApp
-              </a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
 
   <!-- Quick Date Checker & Instant Inquiry Bar -->
   <section class="quick-booking-section" id="quick-booking">
@@ -868,9 +758,9 @@
       <i data-lucide="message-circle"></i>
       <span>WhatsApp</span>
     </a>
-    <a href="#virtual-tour" class="mobile-bar-btn tour-btn">
-      <i data-lucide="orbit"></i>
-      <span>360° Tour</span>
+    <a href="#spaces" class="mobile-bar-btn tour-btn">
+      <i data-lucide="sparkles"></i>
+      <span>Spaces</span>
     </a>
     <a href="#location" class="mobile-bar-btn loc-btn">
       <i data-lucide="map-pin"></i>
