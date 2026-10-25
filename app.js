@@ -410,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (drawerInquireBtn) {
         const text = encodeURIComponent(`Hello SV Conventional Hall, I am interested in inquiring about "${title}". Please share details.`);
-        drawerInquireBtn.href = `https://wa.me/919849287654?text=${text}`;
+        drawerInquireBtn.href = `https://wa.me/919768688889?text=${text}`;
       }
 
       if (hotspotDrawer) {
@@ -543,7 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sendEstimateBtn.addEventListener('click', () => {
       const { total, guests, tier } = calculateTariff();
       const message = `Hello SV Conventional Hall Management Desk,%0A%0AI used your website budget calculator to estimate my wedding/reception tariff:%0A- Expected Guests: ${guests}%0A- Selected Package: ${tier.title}%0A- Indicative Total Tariff: ₹ ${total.toLocaleString('en-IN')}%0A%0APlease check availability for my muhurtham dates and confirm the quote.`;
-      window.open(`https://wa.me/919849287654?text=${message}`, '_blank');
+      window.open(`https://wa.me/919768688889?text=${message}`, '_blank');
     });
   }
 
@@ -567,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const guestEst = document.getElementById('guestEstimate')?.value || '600-1000 Guests';
 
       const msg = `Hello SV Conventional Hall,%0A%0AI would like to check hall availability:%0A- Preferred Muhurtham Date: ${date}%0A- Event Occasion: ${eventType}%0A- Expected Guests: ${guestEst}%0A%0APlease confirm slot availability and sharing booking process.`;
-      window.open(`https://wa.me/919849287654?text=${msg}`, '_blank');
+      window.open(`https://wa.me/919768688889?text=${msg}`, '_blank');
     });
   }
 
@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const note = document.getElementById('cMessage')?.value || 'None';
 
       const msg = `Hello SV Conventional Hall,%0A%0A*New Booking Inquiry*%0A- Name: ${name}%0A- Mobile: ${phone}%0A- Event Date: ${date}%0A- Event Type: ${type}%0A- Notes: ${note}%0A%0APlease arrange a walkthrough or contact me back.`;
-      window.open(`https://wa.me/919849287654?text=${msg}`, '_blank');
+      window.open(`https://wa.me/919768688889?text=${msg}`, '_blank');
     });
   }
 
