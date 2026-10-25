@@ -658,6 +658,394 @@ h1, h2, h3, h4, h5 {
 }
 
 /* ==========================================================================
+   360° LIVE PHOTO WALKTHROUGH
+   ========================================================================== */
+.tour-section {
+  background: #0f0206;
+}
+
+.tour-interactive-card {
+  position: relative;
+  background: #1c050c;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px var(--color-rose-glow);
+}
+
+.panorama-viewport-wrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(420px, 62vw, 650px);
+  background: #000;
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
+}
+
+.panorama-viewport-wrapper.tour-active {
+  touch-action: none;
+}
+
+/* Three.js Canvas Container */
+.three-canvas-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: grab;
+}
+
+.three-canvas-container:active {
+  cursor: grabbing;
+}
+
+.three-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Tap to Activate Cover (Protects Mobile Scroll) */
+.panorama-cover {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(180deg, rgba(20, 3, 8, 0.7) 0%, rgba(15, 2, 6, 0.92) 100%),
+    url('assets/images/main_hall.jpg') center/cover no-repeat;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+.panorama-cover.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cover-content {
+  max-width: 540px;
+}
+
+.cover-icon-pulse {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: rgba(232, 165, 152, 0.2);
+  border: 2px solid var(--color-rose);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-rose);
+  animation: pulse-ring-rose 2s infinite;
+}
+
+.cover-icon-pulse i, .cover-icon-pulse svg {
+  width: 36px;
+  height: 36px;
+}
+
+@keyframes pulse-ring-rose {
+  0% { box-shadow: 0 0 0 0 rgba(232, 165, 152, 0.5); }
+  70% { box-shadow: 0 0 0 20px rgba(232, 165, 152, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(232, 165, 152, 0); }
+}
+
+.cover-content h3 {
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  margin-bottom: 10px;
+  color: var(--color-text-main);
+}
+
+.cover-content p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 22px;
+}
+
+.phone-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: var(--color-rose-light);
+  opacity: 0.85;
+}
+
+.phone-tip i, .phone-tip svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Hotspots Overlay */
+.tour-hotspots-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hotspot-pin {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(34, 7, 16, 0.88);
+  border: 1px solid var(--color-rose);
+  backdrop-filter: blur(6px);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.hotspot-pin:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: var(--color-rose);
+  color: #140308;
+}
+
+.hotspot-pin:hover .hotspot-label {
+  color: #140308;
+}
+
+.hotspot-pin:hover .hotspot-beacon {
+  background: #140308;
+}
+
+.hotspot-beacon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-rose);
+  box-shadow: 0 0 10px var(--color-rose);
+}
+
+.hotspot-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-rose-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.hotspot-label i, .hotspot-label svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Positions for SV Conventional */
+.pin-stage { top: 48%; left: 50%; }
+.pin-chandeliers { top: 22%; left: 32%; }
+.pin-lawn { top: 60%; left: 82%; }
+
+/* HUD Controls Bar - Modern 2-Row Safe Mobile Layout */
+.tour-hud-bar {
+  position: absolute;
+  bottom: 14px;
+  left: 12px;
+  right: 12px;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.hud-scenes,
+.hud-controls {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.scene-btn,
+.hud-control-btn {
+  background: rgba(30, 6, 14, 0.88);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(10px);
+  color: var(--color-text-main);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.scene-btn i, .scene-btn svg,
+.hud-control-btn i, .hud-control-btn svg {
+  width: 15px;
+  height: 15px;
+  color: var(--color-rose);
+}
+
+.scene-btn:hover,
+.hud-control-btn:hover {
+  border-color: var(--color-rose);
+  background: rgba(50, 12, 24, 0.95);
+}
+
+.scene-btn.active {
+  background: var(--color-rose-gradient);
+  color: #140308;
+  border-color: var(--color-rose-light);
+  box-shadow: 0 2px 12px rgba(232, 165, 152, 0.4);
+}
+
+.scene-btn.active i, .scene-btn.active svg {
+  color: #140308;
+}
+
+.hud-control-btn.active {
+  border-color: var(--color-rose);
+  color: var(--color-rose);
+}
+
+.hud-control-btn.active i, .hud-control-btn.active svg {
+  color: var(--color-rose);
+}
+
+/* Mobile Gesture Helper */
+.mobile-gesture-helper {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 3, 8, 0.78);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.mobile-gesture-helper i, .mobile-gesture-helper svg {
+  width: 13px;
+  height: 13px;
+  color: var(--color-rose);
+}
+
+/* Hotspot Detail Drawer */
+.hotspot-drawer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(25, 4, 11, 0.96);
+  border-top: 1px solid var(--color-rose);
+  backdrop-filter: blur(14px);
+  padding: 16px 20px;
+  z-index: 30;
+  transform: translateY(100%);
+  transition: transform var(--transition-smooth);
+}
+
+.hotspot-drawer.open {
+  transform: translateY(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.drawer-header h4 {
+  font-size: 1.1rem;
+  color: var(--color-rose-light);
+}
+
+.drawer-close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.6rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.drawer-body {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.drawer-thumb-wrap {
+  width: 90px;
+  height: 65px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+}
+
+.drawer-thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.drawer-text-wrap {
+  flex: 1;
+}
+
+.drawer-text-wrap p {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.drawer-btn {
+  font-size: 0.82rem;
+  padding: 6px 14px;
+}
+
+@media (max-width: 580px) {
+  .drawer-body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .drawer-thumb-wrap {
+    width: 100%;
+    height: 110px;
+  }
+}
+
+/* Fullscreen Mode */
+.panorama-viewport-wrapper:fullscreen,
+.panorama-viewport-wrapper:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ==========================================================================
    Quick Muhurtham Checker Bar
    ========================================================================== */
 .quick-booking-section {
